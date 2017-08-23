@@ -12,6 +12,8 @@ const dirname = {
   npm: 'node_modules/emochu.io/',
 };
 
+const dir = dirname.npm;
+
 const app = express();
 app.use(cors());
 app.set('view engine', 'hbs');
@@ -36,19 +38,20 @@ module.exports = {
         _.each(arr, (e, i) => {
           load(e, { verbose: true }).into(app);
           if (i === (arr.length - 1)) {
-            load('header.js', { verbose: true, cwd: dirname.npm })
-              .then('systemLib', { verbose: true, cwd: dirname.npm }).into(app, cb);
+            load('packages.js', { verbose: true, cwd: dir })
+              .then('systemLib/header.js', { verbose: true, cwd: dir })
+              .then('systemLib', { verbose: true, cwd: dir }).into(app, cb);
           }
         });
       })
       .catch(console.log);
   },
   start: (port, cb = () => { }) => {
-    load('systemModels', { verbose: true, cwd: dirname.npm })
-      .then('systemMiddlewares', { verbose: true, cwd: dirname.npm })
-      .then('systemRoutes/api/login.js', { verbose: true, cwd: dirname.npm })
-      .then('systemRoutes', { verbose: true, cwd: dirname.npm })
-      .then('init', { verbose: true, cwd: dirname.npm })
+    load('systemModels', { verbose: true, cwd: dir })
+      .then('systemMiddlewares', { verbose: true, cwd: dir })
+      .then('systemRoutes/api/login.js', { verbose: true, cwd: dir })
+      .then('systemRoutes', { verbose: true, cwd: dir })
+      .then('init', { verbose: true, cwd: dir })
       .into(app, () => {
         app.listen(port, () => {
           console.log(icon);

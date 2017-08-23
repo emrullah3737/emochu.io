@@ -1,6 +1,6 @@
 {
   "name": "emochu.io",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Panel",
   "main": "app.js",
   "scripts": {
