@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ADMIN | {{data.el}}</title>
+
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
+
+  <!-- Data Tables -->
+  <link href="../css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+  <link href="../css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+  <link href="../css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+
+  <link href="../css/animate.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+      <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+          <li class="nav-header">
+            <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="../img/admin.png" />
+                             </span>
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{session.mail}}</strong>
+                             </span> <span class="text-muted text-xs block">{{session.role}} <b class="caret"></b></span> </span> </a>
+              <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                <li><a href="../logout">Logout</a></li>
+              </ul>
+            </div>
+            <div class="logo-element">
+              Efab
+            </div>
+          </li>
+          <li>
+            <a href="/admin/index"><i class="fa fa-home"></i> <span class="nav-label">Home</span></a>
+          </li>
+          {{#each data.pages}}
+            {{#if_eq ../data.el this}}
+              <li class="active">
+            {{else}}
+              <li class="">
+            {{/if_eq}}
+              <a href="/admin/{{this}}"><i class="fa fa-angle-right"></i> <span class="nav-label">{{this}}</span></a>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+      <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                  <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary  binded" href="#"><i class="fa fa-bars"></i> </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a href="logout">
+                        <i class="fa fa-sign-out"></i> Log out
+                    </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+      <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+          <h2>{{data.el}}</h2>
+          <ol class="breadcrumb">
+            <li>
+              <a href="/admin/index">Admin</a>
+            </li>
+            <li>
+              <a href="/admin/{{data.el}}">{{data.el}}</a>
+            </li>
+            <li class="active">
+              <strong>{{data.el}} update</strong>
+            </li>
+          </ol>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+      </div>
+      <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                <h5>Update record {{data.el}}</h5>
+                <div class="ibox-tools">
+                  <a class="collapse-link">
+                          <i class="fa fa-chevron-up"></i>
+                      </a>
+                </div>
+              </div>
+              <div class="ibox-content">
+                <form role="form" class="form-inline" method="post" enctype="multipart/form-data" action="/admin/update{{data.el}}">
+                  <div class="row">
+                    {{#if data.fileArr}}
+                      {{#each data.fileArr}}
+                        <div class="col-md-3">{{field}}</div>
+                        <div class="col-md-9">
+                          <div class="form-group"><label for="{{field}}" class="sr-only">{{field}}</label>
+                            <input type="file" name="{{field}}" class="form-control"></div>
+                        </div>
+                        <div class="col-md-12">
+                          <hr>
+                        </div>
+                      {{/each}}
+                    {{/if}}
+                    {{#updateRecord data}}
+                    {{/updateRecord}}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- Mainly scripts -->
+  <script src="../js/jquery-2.1.1.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+  <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="../js/plugins/jeditable/jquery.jeditable.js"></script>
+
+  <!-- Data Tables -->
+  <script src="../js/plugins/dataTables/jquery.dataTables.js"></script>
+  <script src="../js/plugins/dataTables/dataTables.bootstrap.js"></script>
+  <script src="../js/plugins/dataTables/dataTables.responsive.js"></script>
+  <script src="../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+
+  <!-- Custom and plugin javascript -->
+  <script src="../js/inspinia.js"></script>
+  <script src="../js/plugins/pace/pace.min.js"></script>
+
+  <!-- Page-Level Scripts -->
+  <script>
+    $(document).ready(function () {
+      $('.navbar-minimalize').addClass("binded").click(function () {
+          $("body").toggleClass("mini-navbar");
+          SmoothlyMenu();
+      });
+
+      $('.dataTables-example').dataTable({
+        responsive: true,
+        "dom": 'T<"clear">lfrtip',
+        "tableTools": {
+          "sSwfPath": "../js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+        }
+      });
+
+      /* Init DataTables */
+      var oTable = $('#editable').dataTable();
+
+      /* Apply the jEditable handlers to the table */
+      oTable.$('td').editable('../../example_ajax.php', {
+        "callback": function (sValue, y) {
+          var aPos = oTable.fnGetPosition(this);
+          oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+        },
+        "submitdata": function (value, settings) {
+          return {
+            "row_id": this.parentNode.getAttribute('id'),
+            "column": oTable.fnGetPosition(this)[2]
+          };
+        },
+
+        "width": "90%",
+        "height": "100%"
+      });
+
+
+    });
+
+    function fnClickAddRow() {
+      $('#editable').dataTable().fnAddData([
+        "Custom row",
+        "New row",
+        "New row",
+        "New row",
+        "New row"]);
+
+    }
+  </script>
+  <style>
+    body.DTTT_Print {
+      background: #fff;
+    }
+
+    .DTTT_Print #page-wrapper {
+      margin: 0;
+      background: #fff;
+    }
+
+    button.DTTT_button,
+    div.DTTT_button,
+    a.DTTT_button {
+      border: 1px solid #e7eaec;
+      background: #fff;
+      color: #676a6c;
+      box-shadow: none;
+      padding: 6px 8px;
+    }
+
+    button.DTTT_button:hover,
+    div.DTTT_button:hover,
+    a.DTTT_button:hover {
+      border: 1px solid #d2d2d2;
+      background: #fff;
+      color: #676a6c;
+      box-shadow: none;
+      padding: 6px 8px;
+    }
+
+    .dataTables_filter label {
+      margin-right: 5px;
+    }
+  </style>
+</body>
+
+</html>
