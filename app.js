@@ -20,7 +20,7 @@ app.use('/', express.static(`${dirname.npm}public`));
 app.use('/admin', express.static(`${dirname.npm}public`));
 app.use('/', express.static(`${dirname.local}public`));
 app.use('/admin', express.static(`${dirname.local}public`));
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', [path.join(__dirname, 'views'), 'views']);
 module.exports = {
   static: (arr) => {
     _.each(arr, (e) => {
