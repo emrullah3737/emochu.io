@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 
 module.exports = (app) => {
-  const routing = () => {
+  const routing = (mongolog) => {
+    console.log(mongolog);
     router.use(bodyParser.json());
     router.use(bodyParser.urlencoded({ extended: true }));
 

@@ -36,8 +36,8 @@ module.exports = (app) => {
       };
     }
 
-    find(req, res, cond, populate, sort, limit) {
-      this.Model.find(cond, (err, data) => {
+    find(obj) {
+      this.Model.find(obj.cond, (err, data) => {
         if (this.mask) {
           _.mapObject(data, (e) => {
             const deepData = e;
@@ -47,9 +47,17 @@ module.exports = (app) => {
             return deepData;
           });
         }
-        if (!err && data.length > 0) header.status200(req, res, data);
-        else header.status404(req, res, err);
-      }).populate(populate).sort(sort).limit(limit);
+        const count = data ? data.length : 0;
+        if (!err && data.length > 0) header.status200(obj.req, obj.res, data, count);
+        else header.status404(obj.req, obj.res, err);
+      }).populate(obj.populate)
+        .sort(obj.sort)
+        .limit(obj.limit)
+        .count(obj.count, (err, res) => {
+          if (err) console.log(err);
+          if (res) return res;
+        })
+        .skip(obj.skip);
     }
 
     populate(populate) {
@@ -80,18 +88,33 @@ module.exports = (app) => {
     getData(req, res) {
       if (this.protect && this.protect.get) return header.status403(req, res);
       if (header.headerController(req) === false) return header.status403(req, res);
-
-      let limit = 10;
-      let sort = '';
-      let populate = '';
+      const obj = {};
+      obj.req = req;
+      obj.res = res;
+      obj.limit = 10;
+      obj.sort = '';
+      obj.populate = '';
+      obj.count = '';
+      obj.skip = '';
       const cond = {};
       if (req.params.id !== undefined) cond._id = req.params.id;
 
       if (req.query) {
-        limit = parseInt(req.query.l, 10) || parseInt(req.query.limit, 10) || 10;
-        sort = req.query.s || req.query.sort || '';
-        populate = req.query.p || req.query.populate || '';
-        populate = this.populate(populate);
+        // limit
+        obj.limit = parseInt(req.query.l, 10) || parseInt(req.query.limit, 10) || 10;
+
+        // sort
+        obj.sort = req.query.s || req.query.sort || '';
+
+        // skip
+        obj.skip = req.query.ss || req.query.skip || '';
+        obj.skip = parseInt(obj.skip, 10);
+
+        // populate
+        const populate = req.query.p || req.query.populate || '';
+        obj.populate = this.populate(populate);
+
+        // where
         if (req.query.where) {
           const where = req.query.where;
           const whereArr = where.split(',');
@@ -100,12 +123,24 @@ module.exports = (app) => {
             cond[objArr[0]] = objArr[1];
           });
         }
+
+        // count
+        if (req.query.count || req.query.c) {
+          obj.count = {};
+          const count = req.query.c || req.query.count || '';
+          const countArr = count.split(',');
+          _.each(countArr, (e, i) => {
+            const objArr = e.split(':');
+            obj.count[objArr[0]] = objArr[1];
+          });
+        }
       }
       return header.token(req, (error, decode) => {
         if (this.owner && !error) {
           if (this.owner.key) cond[this.owner.key] = decode._id;
         } else if (this.owner && error) return header.status403(req, res);
-        this.find(req, res, cond, populate, sort, limit);
+        obj.cond = cond;
+        this.find(obj);
       });
     }
 

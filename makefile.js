@@ -2,7 +2,6 @@ const file = require('file');
 const createFile = require('create-file');
 
 exports.make = () => new Promise((resolve, reject) => {
-  // file.mkdirsSync('config', 777);
   const env = () => new Promise((res, rej) => {
     createFile('config/env.js', 'module.exports = () => \'development\';\n', (err) => {
       if (!err) {
@@ -18,7 +17,7 @@ exports.make = () => new Promise((resolve, reject) => {
   'X-Client-Secret': '123',
   endpoint: '',
   db: {
-    db: 'database',
+    db: 'dbemochu',
     host: 'localhost',
     user: '',
     pass: '',
@@ -44,7 +43,7 @@ exports.make = () => new Promise((resolve, reject) => {
   'X-Client-Secret': '123',
   endpoint: '',
   db: {
-    db: 'database',
+    db: 'dbemochu',
     host: 'localhost',
     user: '',
     pass: '',
@@ -66,6 +65,8 @@ exports.make = () => new Promise((resolve, reject) => {
   dev().then(env).then(pro).then(() => {
     file.mkdirsSync('models', 777);
     file.mkdirsSync('routes', 777);
+    file.mkdirsSync('controller', 777);
+    file.mkdirsSync('views', 777);
     setTimeout(() => {
       resolve();
     }, 100);

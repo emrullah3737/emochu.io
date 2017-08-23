@@ -35,8 +35,8 @@ module.exports = (app) => {
       else res.status(403).json({ error: 'Unauthorized', message: 'Unauthorized zone', status: 403 });
     }
 
-    status200(req, res, data) {
-      res.status(200).json({ data, status: 200 });
+    status200(req, res, data, count) {
+      res.status(200).json({ count, data, status: 200 });
     }
 
     specErr(req, res, err = 'ValidationError', message = 'id is undefined') {

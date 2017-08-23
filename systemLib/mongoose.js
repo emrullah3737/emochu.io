@@ -17,17 +17,17 @@ module.exports = (app) => {
         const password = config.db.pass || '';
 
         mongoose.connect(`mongodb://${user}:${password}@${host}/${db}`);
-        this.connection((err, data) => {
+        this.connection(db, (err, data) => {
           if (err) rej(err);
           else res(data);
         });
       });
     }
 
-    connection(cb) {
+    connection(dbName, cb) {
       const db = mongoose.connection;
-      db.on('open', () => cb(null, '* mongoose connection success *'));
-      db.on('error', () => cb('* mongoose connection error *', null));
+      db.on('open', () => cb(null, `* mongoose connection success, database:${dbName} *`));
+      db.on('error', () => cb(`* mongoose connection error, database:${dbName} *`, null));
     }
   }
   return new Mongo();
