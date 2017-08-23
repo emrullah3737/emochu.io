@@ -2,7 +2,7 @@
 
 # **USAGE**
 
-		app.js
+	app.js
 ```javascript
 const emochu = require('emochu.io');
 
@@ -23,7 +23,7 @@ emochu.firstLoads(['config'], () => {
 
 
 # **CONFIG**
-env.js
+	env.js
 ```javascript
 module.exports = () => 'development';
  or
