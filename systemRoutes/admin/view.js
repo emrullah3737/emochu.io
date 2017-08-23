@@ -47,8 +47,8 @@ module.exports = (app) => {
             });
           } else if (types.options && types.options.ref) {
             const referance = types.options.ref;
-            let model = app.systemModels[el];
-            if (!model) model = app.models[el];
+            let model = app.systemModels[referance];
+            if (!model) model = app.models[referance];
             model.Model.find({}, (error, response) => {
               ref = { referance, response };
               fieldObj.push({ field, type, enums, ref });

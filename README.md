@@ -23,7 +23,7 @@ emochu.firstLoads(['config'], () => {
 
 
 # **CONFIG**
-	env.js
+env.js
 ```javascript
 module.exports = () => 'development';
  or
