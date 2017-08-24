@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const _ = require('underscore');
 
 module.exports = (app) => {
   const routing = (mongolog) => {
@@ -15,6 +16,9 @@ module.exports = (app) => {
         saveUninitialized: true,
       }));
 
+    _.each(app.routes, (e) => {
+      router.use('/', e);
+    });
     router.use('/admin', app.systemRoutes.admin.pages.index);
     router.use('/admin', app.systemRoutes.admin.pages.login);
     router.use('/admin', app.systemRoutes.admin.login);

@@ -1,1 +1,6 @@
 public/uploads
+config
+controllers
+models
+routes
+index.js

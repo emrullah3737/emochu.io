@@ -8,7 +8,7 @@ const emochu = require('emochu.io');
 
 emochu.firstLoads(['config'], () => {
   emochu.load('models', { verbose: true })
-  	.then('controllers', { verbose: true })
+    .then('controllers', { verbose: true })
     .then('routes', { verbose: true })
     .into(emochu.app, () => {
       emochu.start(3000);
