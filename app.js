@@ -4,7 +4,6 @@ const cors = require('cors');
 const _ = require('underscore');
 const path = require('path');
 const icon = require('./icon');
-const makefile = require('./makefile');
 
 
 const dirname = {
@@ -33,18 +32,14 @@ module.exports = {
   express,
   load,
   firstLoads: (arr, cb) => {
-    makefile.make()
-      .then(() => {
-        _.each(arr, (e, i) => {
-          load(e, { verbose: true }).into(app);
-          if (i === (arr.length - 1)) {
-            load('packages.js', { verbose: true, cwd: dir })
-              .then('systemLib/header.js', { verbose: true, cwd: dir })
-              .then('systemLib', { verbose: true, cwd: dir }).into(app, cb);
-          }
-        });
-      })
-      .catch(console.log);
+    _.each(arr, (e, i) => {
+      load(e, { verbose: true }).into(app);
+      if (i === (arr.length - 1)) {
+        load('packages.js', { verbose: true, cwd: dir })
+          .then('systemLib/header.js', { verbose: true, cwd: dir })
+          .then('systemLib', { verbose: true, cwd: dir }).into(app, cb);
+      }
+    });
   },
   start: (port, cb = () => { }) => {
     load('systemModels', { verbose: true, cwd: dir })

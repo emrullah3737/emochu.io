@@ -1,15 +1,18 @@
 {
   "name": "emochu.io",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "description": "Panel",
   "main": "app.js",
-  "scripts": {
-    "test": "npm test"
+  "preferGlobal": true,
+  "bin": {
+    "emochu:create:app": "shell/create.js",
+    "emochu:start": "shell/start.js"
   },
   "author": "Emrullah Karataş",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "child_process": "^1.0.2",
     "cors": "^2.8.4",
     "create-file": "^1.0.1",
     "eslint": "^4.5.0",
@@ -25,7 +28,13 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "concurrently": "^3.5.0",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emrullah3737/emochu.git"
+  },
+  "homepage": "https://github.com/emrullah3737/emochu"
 }
