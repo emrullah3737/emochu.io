@@ -67,7 +67,7 @@ const make = () => new Promise((resolve, reject) => {
   const appjs = () => new Promise((res, rej) => {
     createFile('./app.js', `const emochu = require('emochu.io');
     
-    emochu.firstLoads(['config'], () => {
+emochu.firstLoads(['config'], () => {
   emochu.load('models', { verbose: true })
     .then('controller', { verbose: true })
     .then('routes', { verbose: true })
@@ -97,9 +97,11 @@ const make = () => new Promise((resolve, reject) => {
 
 
 make().then(() => {
-  exec('npm install emochu.io', (err, stdout, stderr) => {
+  console.log('npm emochu.io installing...');
+  exec('npm install emochu.io ', (err, stdout, stderr) => {
     if (err) console.log(err);
     if (stdout) console.log(stdout);
     if (stderr) console.log(stderr);
+    console.log('npm emochu.io installed ');
   });
 });

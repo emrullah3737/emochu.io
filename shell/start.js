@@ -1,8 +1,16 @@
 #! /usr/bin/env node
-const exec = require('child_process').exec;
+const spawn = require('child_process').spawn;
 
-exec('node index', (err, stdout, stderr) => {
-  if (err) console.log(err);
-  if (stdout) console.log(stdout);
-  if (stderr) console.log(stderr);
+const ls = spawn('node', ['app']);
+
+ls.stdout.on('data', (data) => {
+  console.log(`stdout: ${data.toString()}`);
+});
+
+ls.stderr.on('data', (data) => {
+  console.log(`stderr: ${data.toString()}`);
+});
+
+ls.on('exit', (code) => {
+  console.log(`child process exited with code ${code.toString()}`);
 });
