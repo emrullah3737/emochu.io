@@ -74,7 +74,7 @@ emochu.firstLoads(['config'], () => {
     .then('controllers', { verbose: true })
     .then('routes', { verbose: true })
     .into(emochu.app, () => {
-      emochu.start(8080);
+      emochu.start(8080, emochu.app.config);
     });
 });\n`, (err) => {
         if (!err) {
@@ -86,10 +86,10 @@ emochu.firstLoads(['config'], () => {
 
   dev().then(env).then(pro).then(appjs)
     .then(() => {
-      file.mkdirsSync('models', 777);
-      file.mkdirsSync('routes', 777);
-      file.mkdirsSync('controllers', 777);
-      file.mkdirsSync('views', 777);
+      exec('mkdir -m 777 models');
+      exec('mkdir -m 777 routes');
+      exec('mkdir -m 777 controllers');
+      exec('mkdir -m 777 views');
       setTimeout(() => {
         resolve();
       }, 100);

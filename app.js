@@ -13,12 +13,12 @@ const dirname = {
   npm: 'node_modules/emochu.io/',
 };
 
-const dir = dirname.local;
+const dir = dirname.npm;
 
 const app = express();
 
 git.short((str) => {
-  app.locals.git = str;
+  app.locals.git = str || Math.floor((Math.random() * 100000) + 1);
 });
 
 app.use(cors());
