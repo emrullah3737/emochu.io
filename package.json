@@ -1,15 +1,16 @@
 {
   "name": "emochu.io",
-  "version": "1.0.14",
+  "version": "1.1.2",
   "description": "Panel",
   "main": "app.js",
   "preferGlobal": true,
   "bin": {
     "emochu:create:app": "shell/create.js",
-    "emochu:create:model" : "shell/create_model.js",
-    "emochu:create:router" : "shell/create_router.js",
-    "emochu:create:controller" : "shell/create_controller.js",
-    "emochu:start": "shell/start.js"
+    "emochu:create:model": "shell/create_model.js",
+    "emochu:create:router": "shell/create_router.js",
+    "emochu:create:controller": "shell/create_controller.js",
+    "emochu:start": "shell/start.js",
+    "emochu:help": "shell/help.js"
   },
   "author": "Emrullah Karataş",
   "license": "ISC",

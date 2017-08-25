@@ -14,7 +14,7 @@ const create = controller => new Promise((res, rej) => {
   return controller;
 };\n`, (err) => {
     if (!err) {
-      console.log(`controllers/${controllerName}.js created`);
+      console.log('\x1b[32m%s\x1b[1m\x1b[0m', `controllers/${controllerName}.js created`);
       return res();
     } return rej(err);
   });

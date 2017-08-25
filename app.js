@@ -1,4 +1,5 @@
 const load = require('express-load');
+const exec = require('child_process').exec;
 const express = require('express');
 const cors = require('cors');
 const _ = require('underscore');
@@ -49,6 +50,7 @@ module.exports = {
       .then('init', { verbose: true, cwd: dir })
       .into(app, () => {
         app.listen(port, () => {
+          exec(`open http://127.0.0.1:${port}/admin/login && node bin/www`);
           console.log(icon);
           console.log(`listening: ${port}`);
           cb();

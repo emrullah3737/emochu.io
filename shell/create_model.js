@@ -38,7 +38,7 @@ const create = model => new Promise((res, rej) => {
   return new MdlCreator(config);
 };\n`, (err) => {
     if (!err) {
-      console.log(`models/${modelName}.js created`);
+      console.log('\x1b[32m%s\x1b[1m\x1b[0m', `models/${modelName}.js created`);
       return res();
     } return rej(err);
   });

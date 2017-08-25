@@ -3,4 +3,3 @@ config
 controllers
 models
 routes
-index.js

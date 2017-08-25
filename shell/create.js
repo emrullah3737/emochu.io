@@ -7,7 +7,7 @@ const make = () => new Promise((resolve, reject) => {
   const env = () => new Promise((res, rej) => {
     createFile('config/env.js', 'module.exports = () => \'development\';\n', (err) => {
       if (!err) {
-        console.log('config/env.js created');
+        console.log('\x1b[32m%s\x1b[1m\x1b[0m', 'config/env.js created');
         return res();
       } return rej(err);
     });
@@ -33,7 +33,7 @@ const make = () => new Promise((resolve, reject) => {
   },
 });\n`, (err) => {
         if (!err) {
-          console.log('config/development.js created');
+          console.log('\x1b[32m%s\x1b[1m\x1b[0m', 'config/development.js created');
           return res();
         } return rej(err);
       });
@@ -59,7 +59,7 @@ const make = () => new Promise((resolve, reject) => {
   },
 });\n`, (err) => {
         if (!err) {
-          console.log('config/production.js created');
+          console.log('\x1b[32m%s\x1b[1m\x1b[0m', 'config/production.js created');
           return res();
         } return rej(err);
       });
@@ -69,14 +69,14 @@ const make = () => new Promise((resolve, reject) => {
     
 emochu.firstLoads(['config'], () => {
   emochu.load('models', { verbose: true })
-    .then('controller', { verbose: true })
+    .then('controllers', { verbose: true })
     .then('routes', { verbose: true })
     .into(emochu.app, () => {
       emochu.start(8080);
     });
 });\n`, (err) => {
         if (!err) {
-          console.log('config/app.js created');
+          console.log('\x1b[32m%s\x1b[1m\x1b[0m', 'app.js created');
           return res();
         } return rej(err);
       });
@@ -97,11 +97,11 @@ emochu.firstLoads(['config'], () => {
 
 
 make().then(() => {
-  console.log('npm emochu.io installing...');
+  console.log('\x1b[32m%s\x1b[1m\x1b[0m', 'npm emochu.io installing...');
   exec('npm install emochu.io ', (err, stdout, stderr) => {
     if (err) console.log(err);
-    if (stdout) console.log(stdout);
+    if (stdout) console.log('\x1b[32m%s\x1b[1m\x1b[0m', stdout);
     if (stderr) console.log(stderr);
-    console.log('npm emochu.io installed ');
+    console.log('\x1b[32m%s\x1b[1m\x1b[0m', 'npm emochu.io installed ');
   });
 });
