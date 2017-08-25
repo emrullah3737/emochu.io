@@ -3,6 +3,7 @@ const exec = require('child_process').exec;
 const express = require('express');
 const cors = require('cors');
 const _ = require('underscore');
+const git = require('git-rev');
 const path = require('path');
 const icon = require('./icon');
 
@@ -12,9 +13,14 @@ const dirname = {
   npm: 'node_modules/emochu.io/',
 };
 
-const dir = dirname.npm;
+const dir = dirname.local;
 
 const app = express();
+
+git.short((str) => {
+  app.locals.git = str;
+});
+
 app.use(cors());
 app.set('view engine', 'hbs');
 app.set('trust proxy', 1); // trust first proxy
@@ -42,15 +48,19 @@ module.exports = {
       }
     });
   },
-  start: (port, cb = () => { }) => {
+  start: (port, config, cb = () => { }) => {
     load('systemModels', { verbose: true, cwd: dir })
       .then('systemMiddlewares', { verbose: true, cwd: dir })
       .then('systemRoutes/api/login.js', { verbose: true, cwd: dir })
       .then('systemRoutes', { verbose: true, cwd: dir })
       .then('init', { verbose: true, cwd: dir })
       .into(app, () => {
+        app.locals.appName = config[config.env].app;
         app.listen(port, () => {
-          exec(`open http://127.0.0.1:${port}/admin/login && node bin/www`);
+          if (config.env === 'development') {
+            const url = config[config.env].endpoint;
+            exec(`open http://${url}:${port}/admin/login && node bin/www`);
+          }
           console.log(icon);
           console.log(`listening: ${port}`);
           cb();

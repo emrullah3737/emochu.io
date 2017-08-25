@@ -15,9 +15,10 @@ const make = () => new Promise((resolve, reject) => {
 
   const dev = () => new Promise((res, rej) => {
     createFile('config/development.js', `module.exports = () => ({
+  app: 'emochu.io',
   'X-Client-Id': '123',
   'X-Client-Secret': '123',
-  endpoint: '',
+  endpoint: '127.0.0.1',
   db: {
     db: 'dbemochu',
     host: 'localhost',
@@ -41,6 +42,7 @@ const make = () => new Promise((resolve, reject) => {
 
   const pro = () => new Promise((res, rej) => {
     createFile('config/production.js', `module.exports = () => ({
+  app: 'emochu.io',
   'X-Client-Id': '123',
   'X-Client-Secret': '123',
   endpoint: '',

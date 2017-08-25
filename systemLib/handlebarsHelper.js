@@ -176,6 +176,14 @@ HandleBars.registerHelper('updateRecord', (data) => {
   return str;
 });
 
+HandleBars.registerHelper('toLowerCase', (str) => {
+  return str.toLowerCase();
+});
+
+HandleBars.registerHelper('toUpperCase', (str) => {
+  return str.toUpperCase();
+});
+
 module.exports = () => {
   console.log('* HandleBars Helper *');
   return HandleBars;

@@ -5,7 +5,7 @@ emochu.firstLoads(['config'], () => {
     .then('controllers', { verbose: true })
     .then('routes', { verbose: true })
     .into(emochu.app, () => {
-      emochu.start(3000);
+      emochu.start(8000, emochu.app.config);
     });
 });
 

@@ -6,13 +6,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | Login</title>
+    <title>{{appName}}</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css?v={{git}}" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v={{git}}" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/animate.css?v={{git}}" rel="stylesheet">
+    <link href="css/style.css?v={{git}}" rel="stylesheet">
 
 </head>
 
@@ -20,19 +20,18 @@
 
     <div class="middle-box text-center loginscreen  animated fadeInDown">
         <div>
-            <div>
-
-                <h1 class="logo-name">LG</h1>
-
-            </div>
-            <h3>Welcome to LG</h3>
-            <p>Login in. To see panel.</p>
+            <h2 style="font-weight: bold;font-size:50px"><i class="fa fa-hand-o-down" aria-hidden="true"></i> {{toUpperCase appName}}<h2>
+            <hr>
+            <h3>Welcome to {{appName}}</h3>
+            <p>Login to see panel.</p>
             <form class="m-t" role="form" method="post" action="o/login">
-                <div class="form-group">
-                    <input type="text" name="mail" class="form-control" placeholder="Username" required="">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <input type="text" name="mail" id="mail" class="form-control" placeholder="Username" required="">
                 </div>
-                <div class="form-group">
-                    <input type="password" name="password" class="form-control" placeholder="Password" required="">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required="">
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
 
@@ -45,8 +44,8 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-2.1.1.js?v={{git}}"></script>
+    <script src="js/bootstrap.min.js?v={{git}}"></script>
 
 </body>
 
