@@ -14,7 +14,7 @@
       |--models/ => mongo model files
       |--node_modules/ => npm packages
       |--public/ => static public files
-      |--uploads/ => static uplads files
+        |--uploads/ => static uplads files
       |--routes/ => express route files
       |--views/ => express route template files
       |--app.js => app file that start the app
