@@ -7,9 +7,9 @@
       
       *file structure
       |--config/
-      |--development.js => development config file
-      |--production.js => production config file
-      |--env.js => configuration of working environment
+        |--development.js => development config file
+        |--production.js => production config file
+        |--env.js => configuration of working environment
       |--controllers/ => controller files
       |--models/ => mongo model files
       |--node_modules/ => npm packages
