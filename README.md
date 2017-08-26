@@ -1,133 +1,254 @@
-    $npm install emochu.io
+	$ npm install -g emochu.io
 
-# **USAGE**
-
-	app.js
-```javascript
-const emochu = require('emochu.io');
-
-emochu.firstLoads(['config'], () => {
-  emochu.load('models', { verbose: true })
-    .then('controllers', { verbose: true })
-    .then('routes', { verbose: true })
-    .into(emochu.app, () => {
-      emochu.start(3000);
-  });
-});
-```
-* **emochu.firstLoads**: you must define config file and first importnant files via firstLoads.	==> **emochu.firstLoads(Array\<file names>, callback)**
-* **emochu.load**: same of express load, you can define models, routes, controllers, etc. ==> **emochu.load(string\<file name>, Object\<optional>)** for more information, see **express load**.
-* **emochu.app**: you must define to .into(emochu.app) for loading files.
-* **emochu.start**: start emochuio ==> **emochu.start(number\<port>, callback\<optional>)**
-
-
-
-# **CONFIG**
-	env.js
-```javascript
-module.exports = () => 'development';
- or
-module.exports = () => 'production';
-```
-
-	development.js, production.js
-```javascript
-module.exports = () => ({
-  'X-Client-Id': '123',
-  'X-Client-Secret': '123',
-  endpoint: '',
-  db: {
-    db: 'database',
-    host: 'localhost',
-    user: '',
-    pass: '',
-  },
-  models: [
-    'test',
-  ],
-  admin: {
-    _slug: 'admin@admin.com',
-    mail: 'admin@admin.com',
-    password: '12345',
-    role: 'SuperAdmin',
-  },
-});
-```
-# **MODELS**
-```javascript
-const mongoose = require('mongoose');
-
-module.exports = (app) => {
-  const configs = app.config[app.config.env];
+# USAGE
+	$ emochu:create:app
+    
+      create initial folders.
+      
+      *file structure
+      |--config/
+      |--development.js => development config file
+      |--production.js => production config file
+      |--env.js => configuration of working environment
+      |--controllers/ => controller files
+      |--models/ => mongo model files
+      |--node_modules/ => npm packages
+      |--public/ => static public files
+      |--uploads/ => static uplads files
+      |--routes/ => express route files
+      |--views/ => express route template files
+      |--app.js => app file that start the app
+# Create Model
+ 
+ 	$ emochu:create:model <model>
+    
+    example;
+    $ emochu:create:model testModel
+    
+    |--models/
+    	|--testModel.js
+   ```javascript
+   module.exports = (app) => {
+  const mongoose = app.packages.mongoose;
   const MdlCreator = app.systemLib.mdlCreator;
   const Schema = mongoose.Schema;
-
 
   const model = {
     _slug: {
       type: String,
       required: false,
     },
-    mail: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    created_at: {
-      type: Date,
-      required: true,
-      default: Date.now,
-    },
-    updated_at: {
-      type: Date,
-      required: false,
-      default: Date.now,
-    },
-    role: {
-      type: String,
-      enum: ['SuperAdmin', 'Admin', 'User', 'Guest'],
-      default: 'User',
-    },
   };
+
   const schema = new Schema(model);
 
   const config = {
-    name: 'test',
+    name: 'testModel',
     schema,
     protect: {
-      post: true,
+      post: false,
       get: false,
-      put: true,
-      delete: true,
+      put: false,
+      delete: false,
     },
-    owner: {
-      key: '_id',
-    },
-    mask: {
-      password: true,
-      role: true,
-    },
+    owner: {},
+    mask: {},
   };
 
   schema.pre('save', function (next) {
     const self = this;
-    if (!self._slug) self._slug = self.mail;
     next();
   });
 
-  const test = new MdlCreator(config);
-  // SuperAdmin
-  const adminData = configs.admin;
-
-  test.Model.findOneAndUpdate(
-    adminData,
-    adminData,
-    { upsert: true },
-    (res, err) => {});
-
-  return test;
+  return new MdlCreator(config);
 };
 ```
+# Create Router
+
+ 	$ emochu:create:router <router> --html<optional>
+    
+    example with --html;
+    $ emochu:create:router testRoute --html 
+    
+    |--routes/
+    	|--testRoute.js
+    |--views/
+    	|--routes/
+        	|--testRoute/
+            	|--testRoute.hbs
+    |--public/
+    	|--routes/
+        	|--testRoute/
+            	|--testRoute.css
+                |--testRoute.js
+
+   ```javascript
+   |--routes/
+    	|--testRoute.js
+        
+  module.exports = (app) => {
+  const router = app.packages.router;
+
+  router.use('/testRoute', (req, res) => {
+    res.render('routes/testRoute/testRoute', { testRoute: 'testRoute' });
+  });
+
+  return router;
+};
+```
+   ```html
+   |--views/
+    	|--routes/
+        	|--testRoute/
+            	|--testRoute.hbs
+        
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{testRoute}}</title>
+  <link rel="stylesheet" type="text/css" href="routes/testRoute/testRoute.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="routes/testRoute/testRoute.js"></script>
+</head>
+<body>
+  <div class="header">
+    <h3>{{toUpperCase appName}} <i class="fa fa-folder-open" aria-hidden="true"></i><h3>
+  </div>
+  <div class="subTitle">welcome to page {{testRoute}} <i class="fa fa-check" aria-hidden="true"></i></div>
+</body>
+</html>
+```
+
+   ```html
+   |--public/
+    	|--routes/
+        	|--testRoute/
+            	|--testRoute.css
+        
+.header {
+  font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+  color: #ccc;
+  padding: 20px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-left: 3px solid #1b809e;
+  border-right: 3px solid #1b809e;
+  width: 75%;
+  text-align: center;
+  font-size: 30px;
+}
+.subTitle {
+  font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+  background: #f7f7f9;
+  color: #777;
+  opacity: 0.2;
+  padding: 20px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-left: 3px solid #1b809e;
+  border-right: 3px solid #1b809e;
+  width: 75%;
+  text-align: center;
+  font-size: 20px;
+}
+
+.fa-check {
+  color: #7bef00;
+}
+
+.fa-folder-open {
+  color: #8A7D71;
+}
+```
+   ```javascript
+   |--public/
+    	|--routes/
+        	|--testRoute/
+            	|--testRoute.js
+                
+$(document).ready(function(){
+  $(".subTitle").animate({ opacity: '1', 'font-size': '30'});
+});
+```
+`127.0.0.1:8080/testRoute`
+![N|Solid](https://image.ibb.co/n5i9wk/test_Route.png)
+
+	example without --html;
+    $ emochu:create:router testRoute2    
+   ```javascript
+   |--routes/
+    	|--testRoute.js
+        
+  module.exports = (app) => {
+  const router = app.packages.router;
+
+  router.use('/testRoute', (req, res) => {
+    res.render('routes/testRoute/testRoute', { testRoute: 'testRoute' });
+  });
+
+  return router;
+};
+```
+# Create Controller
+	$ emochu:create:controller <controller>
+    example;
+    $ emochu:create:controller testController
+    
+    |--controllers/
+    	|--testController.js
+```javascript
+module.exports = (app) => {
+  const controller = {
+    testController: (req, res, next) => {
+      console.log('testController controller executed!');
+      next();
+    },
+  };
+
+  return controller;
+};
+```
+
+# Update Package
+
+	$ emochu:update
+    	# execute $ npm update
+        
+# Help Menu
+	$ emochu:help
+```bash
+emochu:create:app # create base folders and install npm emochu.io
+emochu:create:model <model> # create model in "/models" folder
+emochu:create:router <router> --html<optioal # create router in "/routes" folder
+emochu:create:controller <controller> # create controller in "/controllers" folder
+emochu: -v or -version # emochu.io version
+emochu:update # update emochu.io version
+emochu:start # start the emochu.io
+````
+# Version
+	$ emochu: -v or emochu: -version
+```bash
+# 1.2.13
+````
+# Start `emochu.io`
+	$ emochu:start
+		start the emochu.io app
+ # ADMIN PANEL
+:arrow_forward: `127.0.0.1:8080/admin/login`
+![N|Solid](https://image.ibb.co/fCFa2Q/login.png)
+
+
+:arrow_forward: `127.0.0.1:8080/admin/index`
+![N|Solid](https://image.ibb.co/dUFQ2Q/index.png)
+
+:arrow_forward: `127.0.0.1:8080/admin/<model>`
+![N|Solid](https://image.ibb.co/j3btp5/model.png)
+
+# API CLI
+
+...
